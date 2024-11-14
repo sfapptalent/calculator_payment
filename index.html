@@ -130,9 +130,21 @@
 
         let result = videoChatUsdNet + kpiCameraHoursUsdNet + kpiVideoChatDurationUsdNet + videoStreamingUsdNet 
             + kpiStreamingHoursUsdNet + otherUsdNet;
+        
+        const videoChatPercent = isCategoryA ? '0.45' : '0.3';
+        const kpiCameraHoursPercent = kpiCameraHours >= 120 ? '0.05' : '0';
+        const kpiVideoChatDurationPercent = (isCategoryA && (kpiVideoChatDuration >= 7)) 
+        || (!isCategoryA && (kpiVideoChatDuration >= 5)) ? '0.1' : '0';
+        const videoStreamingPercent = isCategoryA ? '0.5' : '0.4';
+        const kpiStreamingHoursPercent = kpiStreamingHours >= 45 ? '0.1' : '0';
+        const otherPercent = isCategoryA ? '0.3' : '0.15';
+
 
         document.getElementById('result').textContent = result + "$";
-    }
+        document.getElementById('formula').textContent =
+            `Payment = Video chat revenue * ${videoChatPercent}  + Video chat revenue(KPI Camera online) * ${kpiCameraHoursPercent} + ` +
+            `Video chat revenue(KPI Video chat avg duration) * ${kpiVideoChatDurationPercent} + Streaming revenue * ${videoStreamingPercent} + ` + 
+            `Streaming revenue(KPI Streaming hours) * ${kpiStreamingHoursPercent} + Other services revenue* ${otherPercent}`;
 </script>
 
 </body>
