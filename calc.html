@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #320a63, #5e00a2, #ff00a0);
+            background-size: 200% 200%;
+            animation: gradient-animation 8s ease infinite;
+        }
+        @keyframes gradient-animation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 100%; }
+            100% { background-position: 0% 50%; }
+        }
+        .calculator {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 300px;
+        }
+        .calculator h2 {
+            text-align: center;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 0.9em;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 8px;
+            font-size: 1em;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .result {
+            text-align: center;
+            font-size: 1.2em;
+            margin: 20px 0;
+            color: #333;
+        }
+        .calculate-btn {
+            width: 100%;
+            padding: 10px;
+            font-size: 1em;
+            background-color: #320a63;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .calculate-btn:hover {
+            background-color: #5e00a2;
+            transition: 0.5s;
+        }
+    </style>
+</head>
+<body>
+
+<div class="calculator">
+    <h2>Payment calculator</h2>
+
+    <div class="input-group">
+        <label for="input1">Total USD, $</label>
+        <input type="number" id="input1">
+    </div>
+    <div class="input-group">
+        <label for="input2">Video chat USD, $</label>
+        <input type="number" id="input2">
+    </div>
+    <div class="input-group">
+        <label for="input3">KPI Camera online, hours</label>
+        <input type="number" id="input3">
+    </div>
+    <div class="input-group">
+        <label for="input4">KPI Video chat avg duration, minutes</label>
+        <input type="number" id="input4">
+    </div>
+    <div class="input-group">
+        <label for="input5">Streaming USD, $</label>
+        <input type="number" id="input5">
+    </div>
+    <div class="input-group">
+        <label for="input6">KPI Streaming, hours</label>
+        <input type="number" id="input6">
+    </div>
+    <div class="input-group">
+        <label for="input7">Other services USD, $</label>
+        <input type="number" id="input7">
+    </div>
+
+    <div class="result" id="result"></div>
+
+    <button class="calculate-btn" onclick="calculate()">Calculate</button>
+</div>
+
+<script>
+    function calculate() {
+        const Total = parseFloat(document.getElementById('input1').value) || 0;
+        const videoChatUsd = parseFloat(document.getElementById('input2').value) || 0;
+        const kpiCameraHours = parseFloat(document.getElementById('input3').value) || 0;
+        const kpiVideoChatDuration = parseFloat(document.getElementById('input4').value) || 0;
+        const videoStreamingUsd = parseFloat(document.getElementById('input5').value) || 0;
+        const kpiStreamingHours = parseFloat(document.getElementById('input6').value) || 0;
+        const otherUsd = parseFloat(document.getElementById('input7').value) || 0;
+
+        const isCategoryA = Total >= 4000;
+
+        const videoChatUsdNet = isCategoryA ? videoChatUsd * 0.45 : videoChatUsd * 0.3;
+        const kpiCameraHoursUsdNet = kpiCameraHours >= 120 ? videoChatUsd * 0.05 : 0;        
+        const kpiVideoChatDurationUsdNet = (isCategoryA && (kpiVideoChatDuration >= 7)) 
+                || (!isCategoryA && (kpiVideoChatDuration >= 5)) ? videoChatUsd * 0.1 : 0;
+        
+        const videoStreamingUsdNet = isCategoryA ? videoStreamingUsd * 0.5 : videoStreamingUsd * 0.4;
+        const kpiStreamingHoursUsdNet = kpiStreamingHours >= 45 ? videoStreamingUsd * 0.1 : 0;
+        const otherUsdNet = isCategoryA ? otherUsd * 0.3 : otherUsd * 0.15;        
+
+        let result = videoChatUsdNet + kpiCameraHoursUsdNet + kpiVideoChatDurationUsdNet + videoStreamingUsdNet 
+            + kpiStreamingHoursUsdNet + otherUsdNet;
+
+        document.getElementById('result').textContent = result + "$";
+    }
+</script>
+
+</body>
+</html>
